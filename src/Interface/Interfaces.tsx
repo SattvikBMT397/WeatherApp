@@ -4,5 +4,7 @@ export interface DailyWeather {
   }
   
   export interface WeatherData {
+    temperature_2m_max: any;
+    temperature_2m_min: any;
     daily: DailyWeather;
   }

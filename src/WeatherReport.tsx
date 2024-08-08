@@ -8,12 +8,12 @@ import FormControl from "@mui/material/FormControl"
 import InputLabel from "@mui/material/InputLabel"
 import MenuItem from "@mui/material/MenuItem"
 import Select from "@mui/material/Select"
-import SelectChangeEvent from "@mui/material/SelectChangeEvent"
+import {SelectChangeEvent} from "@mui/material/Select"
 import Typography from "@mui/material/Typography"
 import CircularProgress from "@mui/material/CircularProgress"
 import Alert from "@mui/material/Alert"
-import Paper from "@mui/material/Paper"
-import  WeatherData from './Interface/Interfaces';
+import Paper from "@mui/material/Paper";
+import  {WeatherData} from './Interface/Interfaces';
 
 const WeatherReport: React.FC = () => {
   const [weatherData, setWeatherData] = useState<WeatherData|null>(null);
@@ -57,7 +57,7 @@ const WeatherReport: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [selectedCity]);
 
   const handleSearch = useCallback(() => {
     if (selectedCity) {
@@ -74,19 +74,12 @@ const WeatherReport: React.FC = () => {
   useEffect(() => {
     let intervalId=0;
     if (selectedCity) {
-      fetchWeatherData(selectedCity);
-
       intervalId = setInterval(() => {
         fetchWeatherData(selectedCity);
-      }, 600000); 
+      }, 60000); 
     }
-
-    return () => {
-      if (intervalId) {
         clearInterval(intervalId);
-      }
-    };
-  }, [selectedCity, fetchWeatherData]);
+  }, []);
 
   const averageTemperature = useMemo(() => {
     if (weatherData) {
@@ -127,7 +120,7 @@ const WeatherReport: React.FC = () => {
         {error && <Alert severity="error" sx={{ mt: 2 }}>{error}</Alert>}
         {weatherData && (
           <Paper elevation={3} sx={{ p: 2, mt: 2 }}>
-            <Typography variant="h6">Weather Data</Typography>
+            <Typography variant="h6">Weather Data:{selectedCity}</Typography>
             <Typography>Min Temperature: {weatherData.temperature_2m_min[0]}</Typography>
             <Typography>Max Temperature: {weatherData.temperature_2m_max[0]}</Typography>
             {averageTemperature && (
